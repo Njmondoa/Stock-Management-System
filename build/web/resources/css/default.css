@@ -1,0 +1,335 @@
+body {
+    background-color: #ffffff;
+    font-size: 12px;
+    font-family: Verdana, "Verdana CE",  Arial, "Arial CE", "Lucida Grande CE", lucida, "Helvetica CE", sans-serif;
+    color: #000000;  
+    margin: 1px;
+}
+
+h1 {
+    font-family: Arial, "Arial CE", "Lucida Grande CE", lucida, "Helvetica CE", sans-serif;
+    border-bottom: 1px solid #AFAFAF; 
+    font-size:  16px;
+    font-weight: bold;
+    margin: 0px;
+    padding: 0px;
+    color: #302D2D;
+}
+
+#img1{
+
+    float: right;
+    width:25%;
+
+}
+
+
+.ui-datatable .ui-datatable-scrollable-body {
+    min-height: 300px;
+   height: 500px
+}
+
+  .ui-picklist .ui-picklist-list {
+ 
+    font-size: 100%;
+}
+
+
+
+.ui-panel .ui-panel-titlebar {
+    padding: 0.5em 1em 0.3em;
+    height: 12px;
+}
+
+#upB{
+    float: right; 
+    padding:5px;   
+}
+
+a:link, a:visited {
+    color: #f0f0f0;
+    font-weight : bold;
+    text-decoration: none;
+}
+
+.ui-menu .ui-menuitem-text {
+    margin-left: 18px;
+    font-family: inherit;
+
+
+}
+
+.ui-panelgrid .ui-panelgrid-cell {
+    border-width: 1px;
+    border-style: solid;
+    border-color: inherit;
+    padding: 4px 10px;
+    font-size: 14px;
+    font-family: inherit;
+    text-align: left;
+}
+
+.ui-widget-content {
+   border: 1px solid #17434e1a;
+background: #fff3;
+color: #0d151e;
+font-weight: bold;
+font-size: 13px;
+text-align: center;
+font-family: initial;
+}
+
+.ui-dialog .ui-dialog-footer {
+    padding: .4em 1em;
+    border-width: 1px 0 0 0;
+    text-align: left;
+    background-color:  #c2d2ffcc -webkit-gradient(linear, left top, left bottom, from(rgba(255,255,255,0.8)), to(rgba(255,255,255,0)));
+}
+
+.ui-dialog .ui-dialog-titlebar {
+    padding: .4em .4em .4em 1em;
+    position: relative;
+    border: 0px;
+    background-color:  #c2d2ffcc -webkit-gradient(linear, left top, left bottom, from(rgba(255,255,255,0.8)), to(rgba(255,255,255,0)));
+}
+
+a:link:hover, a:visited:hover  {
+    color: #045491;
+    text-decoration : underline;
+    font-size:  16px;
+    font-weight: bold;
+    font-family: Arial, "Arial CE", "Lucida Grande CE", lucida, "Helvetica CE", sans-serif;
+
+}
+
+
+.ui-widget-header {
+    border: 1px solid #00050633;
+    background: #c4c4c4 url("/Reaven-war/faces/javax.faces.resource/images/ui-bg_highlight-soft_100_c4c4c4_1x100.png?ln=primefaces-aristo") 50% 50% repeat-x;
+    background: #c4c4c4 linear-gradient(top, rgba(255,255,255,0.8), rgba(255,255,255,0));
+    background: #c4c4c4 -webkit-gradient(linear, left top, left bottom, from(rgba(255,255,255,0.8)), to(rgba(255,255,255,0)));
+    background:  #c2d2ffcc -webkit-gradient(linear, left top, left bottom, from(rgba(255,255,255,0.8)), to(rgba(255,255,255,0)));
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#DDFFFFFF, endColorstr=#00FFFFFF);
+    color: #0c098f;
+    font-weight: bold;
+    font-family: sans-serif;
+    font-size: 14px;
+    font-style: italic;
+
+    text-shadow: 0px 1px 0px rgba(255,255,255,0.7);
+    
+}
+
+.ui-dialog .ui-dialog-footer {
+    text-align: left;
+    background-color: #c2d2ffcc -webkit-gradient(linear, left top, left bottom, from(rgba(255,255,255,0.8)), to(rgba(255,255,255,0)));
+}
+
+.ui-corner-all {
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 9px;
+    border-bottom-right-radius: 15px;
+    border-bottom-left-radius: 15px;
+}
+
+.ui-toolbar {
+    padding: .6em;
+
+    /*    background-image: url(../img/credit/wp.jpg);
+        background-repeat: repeat-x;
+        background-size: 5%;*/
+
+}
+
+.ui-menubar {
+    width: auto;
+    background-color: #c2d2ffcc -webkit-gradient(linear, left top, left bottom, from(rgba(255,255,255,0.8)), to(rgba(255,255,255,0)));
+}
+
+.ui-menu .ui-menu-list .ui-widget-header {
+    clear: both;
+    float: left;
+    width: 100%;
+    margin: 8px 0;
+    background-color: #c2d2ffcc -webkit-gradient(linear, left top, left bottom, from(rgba(255,255,255,0.8)), to(rgba(255,255,255,0)));
+    color: #141415;
+}
+
+
+img{
+
+    border-radius: 10px;
+    margin-left: 7px;
+}
+
+
+/*.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
+    border: 1px solid #a8a8a8;
+    background: #c4c4c4 url("/GESCI_WEB/faces/javax.faces.resource/images/ui-bg_highlight-hard_80_c4c4c4_1x100.png?ln=primefaces-aristo") 50% 50% repeat-x;
+    background: #c4c4c4 linear-gradient(top, rgba(255,255,255,0.8), rgba(255,255,255,0));
+    background: #c4c4c4 ;
+    background: #c2d2ffcc ;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#DDFFFFFF, endColorstr=#00FFFFFF);
+    font-weight: bold;
+    color: #4f4f4f;
+    text-shadow: 0px 1px 0px rgba(255,255,255,0.7);
+}*/
+
+a:link, a:visited {
+    color: #170742;
+    font-weight: bold;
+}
+
+/*.ui-menu {
+    width: 19em;
+    padding: 0.3em;
+    position: relative;
+    outline: 0 none;
+    background-color:#186f5f00;
+}*/
+
+.ui-dialog .ui-dialog-content {
+    position: relative;
+    border: 0;
+    padding: .5em 1em;
+    background: #fff;
+    overflow: auto;
+    zoom: 1;
+}
+
+
+.ui-datatable thead th, .ui-datatable tfoot td {
+    text-align: center;
+    color: #170d29;
+    font-size: 17px;
+    font-family: initial;
+    background-color: #8ec9d5;
+}
+
+.ui-button {
+    display: inline-block;
+    position: relative;
+    padding: 0;
+    margin-right: .1em;
+    cursor: pointer;
+    text-align: center;
+    zoom: 1;
+    overflow: visible;
+    background-color: #dbdad4;
+    font-style: italic;
+    font-size: 16px;
+    font-family: initial;
+}
+
+.ui-accordion .ui-accordion-content {
+    padding: 1em 2.2em;
+    border-top: 0;
+    margin-top: -2px;
+    position: relative;
+    top: 1px;
+    margin-bottom: 2px;
+    overflow: auto;
+    zoom: 1;
+    background-color: #29662500;
+}
+
+.ui-accordion .ui-accordion-header {
+    cursor: pointer;
+    position: relative;
+    margin-top: 1px;
+    min-height: 0;
+    padding: .5em .5em .5em 2.2em;
+    color: black;
+    font-family: initial;
+    text-align: center;
+    font-size: medium;
+}
+
+
+.ui-button .ui-button-text {
+    display: block;
+    line-height: 1.4;
+    color: #090674;
+}
+
+.ui-datatable .ui-paginator, .ui-datatable .ui-paginator {
+    padding: 2px;
+    background-color: #586178b3;
+}
+
+.ui-fieldset, .ui-fieldset .ui-fieldset-legend {
+    padding: 0.6em 1em;
+    background: #1671951a;
+}
+
+.ui-fieldset-toggleable .ui-fieldset-legend {
+    padding: 0.5em 1em 0.5em 0.5em;
+    cursor: pointer;
+    background: #f2f4ff66;
+    font-size: larger;
+}
+
+table.ui-selectlistbox-list, .ui-selectmanymenu table.ui-selectlistbox-list {
+    border-collapse: collapse;
+    width: 100%;
+    background: #38616c99;
+    font-size: initial;
+    font-family: initial;
+}
+
+.ui-selectlistbox-filter-container {
+    position: relative;
+    margin: 0.1em 0 0.1em 0;
+    padding: 0;
+    background-color: #a4a6b6;
+}
+
+.ui-panel .ui-panel-content {
+    border: 2;
+    background: #c2d2ff1a -webkit-gradient(linear, left top, left bottom, from(rgba(255,255,255,0.8)), to(rgba(255,255,255,0)));
+    padding: 0.5em 1em;
+}
+
+.ui-widget-content .ui-icon {
+    background-image: url("/prime-war/faces/javax.faces.resource/images/ui-icons_616161_256x240.png?ln=primefaces-aristo");
+    background-color: #c2d2ffcc -webkit-gradient(linear, left top, left bottom, from(rgba(255,255,255,0.8)), to(rgba(255,255,255,0)));
+}
+
+.ui-picklist .ui-picklist-list {
+    font-size: 100%;
+    height: 400px;
+}
+
+.ui-selectonemenu-panel .ui-selectonemenu-list-item {
+    border: 0 none;
+    margin: 1px 0;
+    padding: 3px 5px;
+    text-align: left;
+    white-space: nowrap;
+    background: #f7f8ff;
+}
+
+/*
+Fade content bs-carousel with hero headers
+Code snippet by maridlcrmn (Follow me on Twitter @maridlcrmn) for Bootsnipp.com
+Image credits: unsplash.com
+*/
+
+/********************************/
+/*       Fade Bs-carousel       */
+/********************************/
+/*
+Fade content bs-carousel with hero headers
+Code snippet by maridlcrmn (Follow me on Twitter @maridlcrmn) for Bootsnipp.com
+Image credits: unsplash.com
+*/
+
+/********************************/
+/*       Fade Bs-carousel       */
+/********************************/
+/*
+inspired from http://codepen.io/Rowno/pen/Afykb
+& https://jsfiddle.net/q0rgL8ws/
+*/
+

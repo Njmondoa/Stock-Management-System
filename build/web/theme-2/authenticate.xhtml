@@ -1,0 +1,76 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="viewport" content="width=device-width"/>
+        <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+
+        <link href="resources/css/cssLayout.css" rel="stylesheet" type="text/css"/>
+        <link href="resources/css/default.css" rel="stylesheet" type="text/css"/>
+
+
+        <title>GESCI</title>
+    </h:head>
+
+    <h:body style="background-image: url('resources/default.jpg'); background-size:100%; background-repeat: no-repeat;">
+        <p:growl autoUpdate="true" id="msg" sticky="true"/>
+
+        <f:view locale="#{sessionController.language}">
+                
+
+            <h:form id="loginform">
+
+                <p:fieldset  style="font-weight:bold; font-style:italic; font-size:13px; margin:auto; margin-top:15%; width:39%;" >
+
+                    <f:facet name="legend">
+                        <img src="resources/img/credit/r3.jpg" width="240" height="70"  alt="?"/>
+                    
+                        <center>
+                            <h:outputText id="msg" value="#{sessionController.msg}" style="color: red;"/>
+                        </center>
+                    </f:facet>
+
+                    <p:panel style="font-weight:bold; " id="form_con">
+
+                        <f:facet name="header" >
+                            <h:outputText value="Authentificate" style="font-size:12pt;margin-bottom:225%; " />
+                        </f:facet>
+                        <p:growl id="msgs" showDetail="true" />
+                        <h:panelGrid id="fields" columns="3">
+
+                            <p:outputLabel value="Login:" for="login" />
+                            <p:inputText  autocomplete="off" style="font-size: 10pt; font-weight: normal;  font-style: italic;" id="login" value="#{sessionController.currentUser.login}" title="Login" size="30" required="true" requiredMessage="Obligatory field" />
+                            <p:message for="login" />
+
+                            <p:outputLabel value="Password:" for="password" />
+                            <p:inputText type="password"  autocomplete="off" style="font-size: 10pt; font-weight: normal; font-style: italic;" id="password" value="#{sessionController.currentUser.password}" title="Password" size="30" required="true" requiredMessage="Obligatory field" />
+                            <p:message for="password" />
+                        </h:panelGrid>
+
+                        <f:facet name="footer">
+                            <h:panelGrid style="width: 100%; text-align: center;" columns="2">
+                                <h:panelGrid style="width: 100%;" columns="2">
+                                    <p:commandButton id="ok" value="#{lm.Connect}" action="#{sessionController.authenticate()}" update="form_con,msg" />
+                                </h:panelGrid>
+                            </h:panelGrid>
+                        </f:facet>
+                    </p:panel>
+                  <h:form>
+                      <div>
+                        <p:clock pattern="HH:mm:ss dd.MM.yyyy" mode="server" />
+                    </div>
+                </h:form>
+                </p:fieldset>
+               
+                <p:defaultCommand target="ok" />
+            </h:form>
+             
+        </f:view>
+    </h:body>
+</html>
+
+

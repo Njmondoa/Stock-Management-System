@@ -1,0 +1,189 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <!-- html source code -->
+
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="viewport" content="width=device-width"/>
+        <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+        <link href="resources/css/default.css" rel="stylesheet" type="text/css"/>
+        <link href="resources/css/cssLayout.css" rel="stylesheet" type="text/css"/>
+        <title>Doorle</title>
+    </h:head>
+    
+    <style>
+      
+    </style>
+
+    <h:body>
+
+        <p:growl autoUpdate="true" id="growl" sticky="true"/>
+        <f:view locale="#{sessionController.language}">
+
+      
+            <div id="toptop">
+                     <center>
+                        <h:outputText value="D" style="font-size: 10pt; font-weight: bold;" />
+                        <h:outputText value="O" style="font-size: 14pt; font-weight: bold;" />
+                        <h:outputText value="O" style="font-size: 16pt; font-weight: bold;" />
+                        <h:outputText value="R" style="font-size: 16pt; font-weight: bold;" />
+                        <h:outputText value="L" style="font-size: 14pt; font-weight: bold;" />
+                        <h:outputText value="E" style="font-size: 10pt; font-weight: bold;" />
+                        &nbsp;
+                        <h:outputText value="S" style="font-size: 16pt; font-weight: bold;" />
+                        <h:outputText value="T" style="font-size: 14pt; font-weight: bold;" />
+                        <h:outputText value="O" style="font-size: 10pt; font-weight: bold;" />
+                        <h:outputText value="C" style="font-size: 14pt; font-weight: bold;" />
+                        <h:outputText value="K" style="font-size: 16pt; font-weight: bold;" />
+                    </center>
+            </div>
+            <div id="top">
+                    <h:form>
+
+                        <p:toolbar>
+
+                            <f:facet name="left">
+                                <p:menubar style="background: transparent">
+                                    <p:submenu rendered="#{sessionController.file}" icon="ui ui-icon-document" label="#{lm.Account}">
+                                        <p:menuitem icon="ui ui-icon-person" rendered="#{sessionController.users}" immediate="true" action="users.xhtml?faces-redirect=true" value="#{lm.users}"/>
+                                        <p:menuitem rendered="#{sessionController.privileges}" immediate="true" action="privileges.xhtml?faces-redirect=true" value="#{lm.Privileges}"/>
+
+                                    </p:submenu>
+                                    <p:submenu icon="ui-icon-wrench" rendered="#{sessionController.treatment}" label="#{lm.Setting}">
+                                        <p:submenu icon="ui-icon-flag"  label="#{lm.language}">
+                                            <p:menuitem  immediate="true" action="#{sessionController.french()}" value="#{lm.French}"/>
+                                            <p:menuitem  immediate="true" action="#{sessionController.english()}" value="#{lm.English}"/>
+                                            <p:menuitem  immediate="true" action="#{sessionController.chinese()}" value="#{lm.Chinese}"/>
+                                        </p:submenu>
+                                        <p:submenu icon="ui-icon-flag" label="#{lm.color}">
+                                         <p:menuitem immediate="true" action="theme-2/homepage.xhtml?faces-redirect=true"  value="theme-2"/>
+                                       
+                                        </p:submenu>
+                                 
+                                    </p:submenu>
+
+                                    <p:submenu icon="ui-icon-flag" rendered="#{sessionController.analysis}" label="#{lm.Analysis}">
+                                        <p:menuitem immediate="true" action="logfile.xhtml?faces-redirect=true" rendered="#{sessionController.informer}" value="#{lm.Informer}"/>
+                                        <p:menuitem icon="fa fa-bar-chart" action="statistics.xhtml?faces-redirect=true" rendered="#{sessionController.statistics}" value="#{lm.Statistics}"/>
+
+                                    </p:submenu>
+                                </p:menubar>
+                            </f:facet>
+
+                            <f:facet name="right">
+                                <p:menubar>
+                                    <p:menuitem immediate="true" action="#{sessionController.logOut()}" icon="fa fa-sign-out" value="#{lm.Logout}"/>
+                                </p:menubar>
+                            </f:facet>
+                        </p:toolbar>
+                    </h:form>
+
+                    <h:outputText id="msg" value="#{lm.Welcome} :  #{sessionController.currentUser.name} #{sessionController.currentUser.surname}" style="color:yellowgreen; float: right"/>
+
+
+
+            </div>
+
+
+             <div id="left">
+                    <h:form id="menuForm2">
+
+                        <p:menu>
+
+                            <p:submenu rendered="#{sessionController.file}" icon="ui ui-icon-document" label="#{lm.File}">
+                                <p:menuitem rendered="#{sessionController.users}" immediate="true" action="users.xhtml?faces-redirect=true" value="#{lm.Users}"/>
+                                <p:menuitem rendered="#{sessionController.department}" immediate="true" action="departments.xhtml?faces-redirect=true" value="#{lm.Department}"/>
+                                <p:menuitem rendered="#{sessionController.service}" immediate="true" action="service.xhtml?faces-redirect=true" value="#{lm.Service}"/>
+                                <p:menuitem rendered="#{sessionController.itmaterial}" immediate="true" action="itMaterial.xhtml?faces-redirect=true" value="#{lm.Itmaterial}"/>
+                                <p:menuitem rendered="#{sessionController.consumable}" immediate="true" action="hardwareConsumable.xhtml?faces-redirect=true"    value="#{lm.Consumable}"/>
+
+                            </p:submenu>
+                            <p:submenu icon="ui-icon-wrench" rendered="#{sessionController.treatment}" label="#{lm.Treatment}">
+                                <p:menuitem rendered="#{sessionController.privileges}" immediate="true" action="privileges.xhtml?faces-redirect=true" value="#{lm.Privileges}"/>
+
+                                <p:menuitem rendered="#{sessionController.demands}" immediate="true" action="demand.xhtml?faces-redirect=true" value="#{lm.Demands}"/>
+                                <p:menuitem rendered="#{sessionController.mydemands}" immediate="true" action="myDemands.xhtml?faces-redirect=true" value="#{lm.my} #{lm.Demands}"/>
+
+                                <p:menuitem rendered="#{sessionController.attributions}" immediate="true" action="attribution.xhtml?faces-redirect=true" value="#{lm.Attributions}"/>
+                                <p:menuitem rendered="#{sessionController.myattributions}" immediate="true" action="myAttributions.xhtml?faces-redirect=true" value="#{lm.my} #{lm.Attributions}"/>
+                                <p:menuitem rendered="#{sessionController.toconfirm}" immediate="true" action="toConfirm.xhtml?faces-redirect=true" value="#{lm.Demands} #{lm.to} #{lm.confirm}"/>
+                                <p:menuitem rendered="#{sessionController.totreat}" immediate="true" action="toTreat.xhtml?faces-redirect=true" value="#{lm.Demands} #{lm.to} #{lm.treat}"/>
+                                <p:menuitem rendered="#{sessionController.treateddemands}" immediate="true" action="treatedDemands.xhtml?faces-redirect=true" value="#{lm.Demands} #{lm.treated}"/>
+
+
+                            </p:submenu>
+
+
+                        </p:menu>
+                    </h:form>
+
+
+
+             </div>
+
+            <div id="content">
+
+                   <ui:insert name="content" class="ui-fluid">
+                       <img src="resources/default2.jpg" alt="" width="83%" height="500px" />
+                    </ui:insert>
+                   
+            </div>
+                
+             
+                <div>
+                    
+                    <ui:insert name="manage" class="ui-fluid">
+
+                    </ui:insert>
+                    
+                </div>
+                
+
+                <div id="right">
+                    
+                  
+                </div>
+                
+                
+                
+                <div id="bottom1">
+                    <ui:insert name="footer"/>
+                   
+                    <h:form>
+                      
+                        <p:dock position="bottom">
+                            
+                            <p:menuitem value="Trash" icon="resources/icons/trash_blue_full.png" url="#"/>
+                            <p:menuitem value="Branches" icon="resources/icons/network.png" url="#"/>
+                            <p:menuitem value="Departments" icon="resources/icons/network_folder.png" url="#"/>
+                           
+                            <p:menuitem value="Active" icon="resources/icons/clock.png" url="#"/>
+                            <p:menuitem value="messages" icon="resources/icons/email.png" url="#"/>
+                            <p:menuitem value="Help" icon="resources/icons/emblem_web.png" url="#"/>
+                            <p:menuitem value="News Latters" icon="resources/icons/folder_network.png" url="#"/>
+                            <p:menuitem value="spy" icon="resources/icons/g5_network_volume_2.png" url="#"/>
+                            <p:menuitem value="Statistics" icon="resources/icons/icons8-pie-chart-80.png" url="#"/>
+                            <p:menuitem value="Email" icon="resources/icons/mail_reply_sender.png" url="#"/>
+                           
+                        </p:dock> 
+                    </h:form>
+                    
+                    <div style="float:right;">
+                        <p:clock pattern="HH:mm:ss dd.MM.yyyy" mode="server" />
+                    </div>
+                </div>
+
+
+
+
+        </f:view>
+
+    </h:body>
+
+</html>

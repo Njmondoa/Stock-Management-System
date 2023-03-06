@@ -1,0 +1,210 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:metadata>
+        <f:event type="preRenderView" listener="#{sessionController.watchOut()}" />
+        <f:event type="preRenderView" listener="#{hardwareConsController.alert()}" />
+        <f:event type="preRenderView" listener="#{softwareConsController.alert()}" />
+    </f:metadata>
+    
+        <body>
+            <p:growl autoUpdate="true" id="growl" sticky="true"/>
+            <ui:composition template="./index.xhtml">
+
+                <ui:define name="content">
+
+                    <h:form id="form">
+
+                        <center>
+                            <h:outputText id="msg" value="#{userController.msg}" style="color: green;"/>
+                        </center>
+
+                        <p:separator/>
+                        <center>
+                            <h1><h:outputText value="#{lm.list} #{lm.of} #{lm.Users}"/></h1>
+                        </center>
+                        <p:dataTable  paginatorTemplate="{Printer}" paginatorPosition="bottom"
+                                      paginator="true"
+                                      reflow="true" selectionMode="single" selection="#{userController.users}" rowKey="#{item.idusers}" scrollable="true" scrollHeight="250" id="table" value="#{userController.listUsers}" var="item">
+                            <f:facet name="{Printer}">
+                                <h:commandButton value="#{lm.Print}" style="background: greenyellow">
+                                    <p:dataExporter type="pdf" target="table" fileName="#{lm.list} #{lm.of} #{lm.Users}" options="#{exportReport.pdfOpt}"/>
+                                </h:commandButton>
+                            </f:facet>
+                            <p:column filterBy="#{item.name}">
+                                <f:facet name="header">
+                                    <h:outputText value="#{lm.Name}"/>
+                                </f:facet>
+                                <h:outputText value="#{item.name}"/>
+                            </p:column>
+                            <p:column filterBy="#{item.surname}">
+                                <f:facet name="header">
+                                    <h:outputText value="#{lm.Surename}"/>
+                                </f:facet>
+                                <h:outputText value="#{item.surname}"/>
+                            </p:column>
+                            <p:column filterBy="#{item.sex}">
+                                <f:facet name="header">
+                                    <h:outputText value="#{lm.sex}"/>
+                                </f:facet>
+                                <h:outputText value="#{item.sex}"/>
+                            </p:column>
+                            <p:column filterBy="#{item.dateofbirth}">
+                                <f:facet name="header">
+                                    <h:outputText value="#{lm.Birthdate}"/>
+                                </f:facet>
+                                <h:outputText value="#{item.dateofbirth}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </h:outputText>
+                            </p:column>
+                            <p:column filterBy="#{item.efunction}">
+                                <f:facet name="header">
+                                    <h:outputText value="#{lm.function}"/>
+                                </f:facet>
+                                <h:outputText value="#{item.efunction}"/>
+                            </p:column>
+                            <p:column filterBy="#{item.matricule}">
+                                <f:facet name="header">
+                                    <h:outputText value="#{lm.Matricule}"/>
+                                </f:facet>
+                                <h:outputText value="#{item.matricule}"/>
+                            </p:column>
+                            <p:column filterBy="#{item.phonenumber}">
+                                <f:facet name="header">
+                                    <h:outputText value="#{lm.PhoneNumber}"/>
+                                </f:facet>
+                                <h:outputText value="#{item.phonenumber}"/>
+                            </p:column>
+                            <p:column filterBy="#{item.email}">
+                                <f:facet name="header">
+                                    <h:outputText value="#{lm.email}"/>
+                                </f:facet>
+                                <h:outputText value="#{item.email}"/>
+                            </p:column>
+                            <p:column filterBy="#{item.adresse}">
+                                <f:facet name="header">
+                                    <h:outputText value="#{lm.Address}"/>
+                                </f:facet>
+                                <h:outputText value="#{item.adresse}"/>
+                            </p:column>
+                            <p:column filterBy="#{item.login}" exportable="false">
+                                <f:facet name="header">
+                                    <h:outputText value="#{lm.Login}"/>
+                                </f:facet>
+                                <h:outputText value="#{item.login}"/>
+                            </p:column>
+
+                            <p:column filterBy="#{item.idservice.name}">
+                                <f:facet name="header">
+                                    <h:outputText value="#{lm.Service}"/>
+                                </f:facet>
+                                <h:outputText value="#{item.idservice}"/>
+                            </p:column>
+                        </p:dataTable>
+                        <p:separator/>
+
+                        <h:panelGrid style="margin: auto;" columns="7">
+                            <p:commandButton icon="ui-icon-plusthick" widgetVar="add" partialSubmit="true" actionListener="#{userController.prepareCreate}" update=":form_tr:fm_users,msg" oncomplete="PF('wv_users').show()" value="#{lm.Add}"/>
+                            <p:commandButton icon="ui-icon-pencil" widgetVar="modify" partialSubmit="true" actionListener="#{userController.action}" update=":form_tr:fm_users,msg" oncomplete="PF('wv_users').show()"  value="#{lm.modify}"/>
+                            <p:commandButton icon="ui-icon-trash" widgetVar="delete" partialSubmit="true" actionListener="#{userController.action}" update=":form_tr:fm_users,msg" oncomplete="PF('wv_users').show()"  value="#{lm.delete}"/>
+                            <p:commandButton icon="ui-icon-clipboard" widgetVar="consult" partialSubmit="true" actionListener="#{userController.action}" update=":form_tr:fm_users,msg" oncomplete="PF('wv_users').show()" value="#{lm.View}"/>
+                            <p:commandButton icon="ui-icon-refresh" widgetVar="refresh" partialSubmit="true" actionListener="#{userController.init()}" update="table,msg" value="#{lm.refresh}"/>
+                            <p:commandButton icon="ui-icon-close" action="homepage.xhtml?faces-redirect=true" value="#{lm.close}"/>
+
+
+
+                        </h:panelGrid>
+                    </h:form>
+
+
+
+                    <h:form id="form_tr">
+
+                        <p:dialog showEffect="fade" modal="true" id="fm_users" widgetVar="wv_users">
+                            <f:facet name="header">
+                                <h:outputText value="#{lm.Add} / #{lm.modify} #{lm.a} #{lm.user}"/>
+                            </f:facet>
+                            <h:panelGrid id="inputs" columns="3">
+
+                                <p:outputLabel value="#{lm.Name}:" for="name" />
+                                <p:inputText disabled="#{userController.operation.equals('delete') or userController.operation.equals('consult')}" required="true" requiredMessage="Obligatory field!" id="name" value="#{userController.users.name}" title="Name" />
+                                <p:message for="name"/>
+
+                                <p:outputLabel value="#{lm.Surename}:" for="surname" />
+                                <p:inputText disabled="#{userController.operation.equals('delete') or userController.operation.equals('consult')}" required="true" requiredMessage="Obligatory field!" id="surname" value="#{userController.users.surname}" title="Surname" />
+                                <p:message for="surname"/>
+
+                                <p:outputLabel value="#{lm.sex}:" for="sex" />
+                                <p:selectOneMenu disabled="#{userController.operation.equals('delete') or userController.operation.equals('consult')}" required="true" requiredMessage="Obligatory field!" id="sex" value="#{userController.users.sex}">
+                                    <f:selectItem itemLabel="" itemValue=""/>
+                                    <f:selectItem itemLabel="Female" itemValue="Female"/>
+                                    <f:selectItem itemLabel="Male" itemValue="Male"/>
+                                </p:selectOneMenu>
+                                <p:message for="sex"/>
+
+                                <p:outputLabel value="#{lm.Birthdate}:" for="dateofbirth" />
+                                <p:calendar disabled="#{userController.operation.equals('delete') or userController.operation.equals('consult')}" showOn="button" pattern="dd/MM/yyyy" required="true" requiredMessage="Obligatory field!" id="dateofbirth" value="#{userController.users.dateofbirth}" title="Date of birth" >
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </p:calendar>
+                                <p:message for="dateofbirth"/>
+
+                                <p:outputLabel value="#{lm.function}:" for="efunction" />
+                                <p:inputText disabled="#{userController.operation.equals('delete') or userController.operation.equals('consult')}" required="true" requiredMessage="Obligatory field!" id="efunction" value="#{userController.users.efunction}" title="Efunction" />
+                                <p:message for="efunction"/>
+
+                                <p:outputLabel value="#{lm.Matricule}:" for="matricule" />
+                                <p:inputText disabled="#{userController.operation.equals('delete') or userController.operation.equals('consult')}" required="true" requiredMessage="Obligatory field!" id="matricule" value="#{userController.users.matricule}" title="Matricule" />
+                                <p:message for="matricule"/>
+
+                                <p:outputLabel value="#{lm.PhoneNumber}:" for="phonenumber" />
+                                <p:inputText disabled="#{userController.operation.equals('delete') or userController.operation.equals('consult')}" required="true" requiredMessage="Obligatory field!" id="phonenumber" value="#{userController.users.phonenumber}" title="Phonenumber" />
+                                <p:message for="phonenumber"/>
+
+                                <p:outputLabel value="#{lm.email}:" for="email" />
+                                <p:inputText disabled="#{userController.operation.equals('delete') or userController.operation.equals('consult')}" validatorMessage="Ecrivez un email valide" required="true" requiredMessage="Obligatory field!" id="email" value="#{userController.users.email}" title="Email" >
+                                <f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
+                                <f:validateLength minimum="2" />
+                                </p:inputText>
+                                <p:message for="email"/>
+
+                                <p:outputLabel value="#{lm.Address}:" for="adresse" />
+                                <p:inputText disabled="#{userController.operation.equals('delete') or userController.operation.equals('consult')}" required="true" requiredMessage="Obligatory field!" id="adresse" value="#{userController.users.adresse}" title="Adresse" type="email"/>
+                                <p:message for="adresse"/>
+
+                                <p:outputLabel value="#{lm.Login}:" for="login" />
+                                <p:inputText disabled="#{userController.operation.equals('delete') or userController.operation.equals('consult')}" required="true" requiredMessage="Obligatory field!" id="login" value="#{userController.users.login}" title="Login" />
+                                <p:message for="login"/>
+
+                                <p:outputLabel value="#{lm.Password}:" for="password" />
+                                <p:password disabled="#{userController.operation.equals('delete') or userController.operation.equals('consult')}" feedback="true" required="true" requiredMessage="Obligatory field!" id="password" value="#{userController.users.password}" title="Password" />
+                                <p:message for="password"/>
+
+                                <p:outputLabel value="#{lm.Service}:" for="idservice" />
+                                <p:selectOneMenu disabled="#{userController.operation.equals('delete') or userController.operation.equals('consult')}" id="idservice" value="#{userController.service.idservice}" required="true" requiredMessage="The Service field is required.">
+                                    <!-- TODO: update below reference to list of available items-->
+                                    <f:selectItem itemValue="" itemLabel=""/>
+                                    <f:selectItems value="#{serviceController.listService}" var="service" itemLabel="#{service.name}" itemValue="#{service.idservice}"/>
+                                </p:selectOneMenu>
+                                <p:message for="idservice"/>
+                            </h:panelGrid>
+                            <f:facet name="footer">
+                                <center>
+                                    <p:commandButton rendered="#{!userController.operation.equals('consult')}" icon="ui-icon-check" actionListener="#{userController.persist()}" process="@form" update="inputs,:form:table,:form:msg" value="#{lm.confirm}"/>
+                                </center>
+                            </f:facet>
+                        </p:dialog>
+                    </h:form>
+
+
+                </ui:define>
+
+            </ui:composition>
+
+        </body>
+    
+</html>

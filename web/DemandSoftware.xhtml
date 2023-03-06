@@ -1,0 +1,122 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:metadata>
+        <f:event type="preRenderView" listener="#{sessionController.watchOut()}" />
+        <f:event type="preRenderView" listener="#{hardwareConsController.alert()}" />
+        <f:event type="preRenderView" listener="#{softwareConsController.alert()}" />
+    </f:metadata>
+
+    <body>
+        <p:growl autoUpdate="true" id="growl" sticky="true"/>
+        <ui:composition template="./index.xhtml">
+
+            <ui:define name="content">
+                <h:form id="form">
+                    <center>
+                        <h:outputText id="msg" value="#{demandController.msg}" style="color: green;"/>
+                    </center>
+
+                    <p:commandButton style="height: 30pt" action="DemandSoftware.xhtml?faces-redirect=true" value="#{lm.Demands} #{lm.Consumable} #{lm.software}"/>
+                    <p:spacer width="20" height="20" />
+                    <p:commandButton style="height: 30pt" action="DemandHardware.xhtml?faces-redirect=true" value="#{lm.Demands} #{lm.Consumable} #{lm.hardware}"/>
+
+
+                    <p:separator/>
+                    <center>
+                        <h1><h:outputText value="#{lm.list} #{lm.of} #{lm.Consumable} #{lm.software} #{lm.demanded}"/></h1>
+                    </center><p:dataTable paginatorTemplate="{Printer}" paginatorPosition="bottom"
+                                  paginator="true"
+                                  reflow="true" selectionMode="single" selection="#{demandController.demand}" rowKey="#{item.iddemand}" scrollable="true" scrollHeight="200" id="table"  value="#{demandController.listmyDemandSoft}" var="item">
+                        <f:facet name="{Printer}">
+                            <h:commandButton value="#{lm.Print}" style="background: greenyellow">
+                                <p:dataExporter type="pdf" target="table" fileName="#{lm.list} #{lm.of} #{lm.Demands} #{lm.of} #{lm.Consumable} #{lm.software}" options="#{exportReport.pdfOpt}"/>
+                            </h:commandButton>
+                        </f:facet>
+                        <p:column filterBy="#{item.idsoftwarecons}">
+                            <f:facet name="header">
+                                <h:outputText value="#{lm.Consumable} #{lm.software}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.idsoftwarecons}"/>
+                        </p:column>
+
+
+                        <p:column filterBy="#{item.qtydemanded}">
+                            <f:facet name="header">
+                                <h:outputText value="#{lm.quantity} #{lm.demanded}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.qtydemanded}"/>
+                        </p:column>
+                        <p:column filterBy="#{item.dateofdemand}">
+                            <f:facet name="header">
+                                <h:outputText value="#{lm.Date} #{lm.of} #{lm.Demands}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.dateofdemand}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column filterBy="#{item.idusers}">
+                            <f:facet name="header">
+                                <h:outputText value="#{lm.Demandor}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.idusers}"/>
+                        </p:column>
+                    </p:dataTable>
+                    <p:separator/>
+
+                    <h:panelGrid style="margin: auto;" columns="5">
+                        <p:commandButton icon="ui-icon-plusthick" widgetVar="add" partialSubmit="true" actionListener="#{demandController.prepareCreate}" update=":form_tr:fm_demand,msg" oncomplete="PF('wv_demand').show()" value="#{lm.Add}"/>
+                        <p:commandButton icon="ui-icon-pencil" widgetVar="modify" partialSubmit="true" actionListener="#{demandController.action}" update=":form_tr:fm_demand,msg" oncomplete="PF('wv_demand').show()"  value="#{lm.modify}"/>
+                        <p:commandButton icon="ui-icon-trash" widgetVar="delete" partialSubmit="true" actionListener="#{demandController.action}" update=":form_tr:fm_demand,msg" oncomplete="PF('wv_demand').show()"  value="#{lm.delete}"/>
+                        <p:commandButton icon="ui-icon-clipboard" widgetVar="consult" partialSubmit="true" actionListener="#{demandController.action}" update=":form_tr:fm_demand,msg" oncomplete="PF('wv_demand').show()" value="#{lm.View}"/>
+
+                    </h:panelGrid>
+                </h:form>
+
+                <h:form id="form_tr">
+                    <p:dialog showEffect="fade" modal="true" id="fm_demand" widgetVar="wv_demand">
+                        <f:facet name="header">
+                            <h:outputText value="#{lm.Add} / #{lm.modify} #{lm.a} #{lm.Consumable} #{lm.software}"/>
+                        </f:facet>
+
+                        <h:panelGrid id="inputs" columns="3">
+
+                            <p:outputLabel value="#{lm.Consumable} #{lm.software}:" for="conIdconsumable" />
+                            <p:selectOneMenu disabled="#{demandController.operation.equals('delete') or demandController.operation.equals('consult')}" id="conIdconsumable" value="#{demandController.softwarecons.idsoftwarecons}">
+                                <f:selectItem itemLabel="" itemValue=""/>
+                                <f:selectItems value="#{demandController.listSoftwarecons}" var="software" itemLabel="#{software.name}" itemValue="#{software.idsoftwarecons}"/>
+                            </p:selectOneMenu>
+                            <p:message for="conIdconsumable"/>
+
+
+                            <p:outputLabel value="#{lm.quantity} #{lm.demanded}:" for="qtydemanded" />
+                            <p:inputText disabled="#{demandController.operation.equals('delete') or demandController.operation.equals('consult')}" id="qtydemanded" value="#{demandController.demand.qtydemanded}" title="Qtydemanded" />
+                            <p:message for="qtydemanded"/>
+
+                            <p:outputLabel value="#{lm.Date} #{lm.of} #{lm.Demands}:" for="dateofdemand" />
+                            <p:calendar disabled="#{demandController.operation.equals('delete') or demandController.operation.equals('consult')}" showOn="button" pattern="dd/MM/yyyy" id="dateofdemand" value="#{demandController.demand.dateofdemand}" title="Dateofdemand" >
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </p:calendar>
+                            <p:message for="dateofdemand"/>
+
+
+                        </h:panelGrid>
+                        <f:facet name="footer">
+                            <center>
+                                <p:commandButton rendered="#{!demandController.operation.equals('consult')}" icon="ui-icon-check" actionListener="#{demandController.persist()}" update="inputs,:form:table,:form:msg" value="#{lm.Save}"/>
+                            </center>
+                        </f:facet>
+                    </p:dialog>
+                </h:form>
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

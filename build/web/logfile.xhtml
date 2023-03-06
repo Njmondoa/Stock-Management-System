@@ -1,0 +1,78 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <f:metadata>
+        <f:event type="preRenderView" listener="#{sessionController.watchOut()}" />
+        <f:event type="preRenderView" listener="#{hardwareConsController.alert()}" />
+        <f:event type="preRenderView" listener="#{softwareConsController.alert()}" />
+
+    </f:metadata>
+    <body>
+        <p:growl autoUpdate="true" id="growl" sticky="true"/>
+        <ui:composition template="./index.xhtml">
+
+            <ui:define name="content">
+
+                <h:form>
+                    <center><h1><h:outputText value="#{lm.logfile}"/></h1></center>
+                    <p:dataTable scrollable="true" scrollHeight="350" id="table" value="#{logfileController.listLogfile}" var="item">
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{lm.Name}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.name}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{lm.Target}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.target}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{lm.Date}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.date}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{lm.Time}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.time}">
+                                <f:convertDateTime pattern="HH:mm:ss" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{lm.Ipaddress}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.ipadresse}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{lm.user}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.idusers.name} #{item.idusers.surname}"/>
+                        </p:column>
+                    </p:dataTable>
+                    <p:separator/>
+
+                    <h:panelGrid style="margin: auto;" columns="7">
+                        <p:commandButton icon="ui-icon-trash" partialSubmit="true" actionListener="#{logfileController.deleteAll()}" update="table" value="#{lm.Empty} #{lm.the} #{lm.logfile}"/>
+                        <p:commandButton icon="ui-icon-close" action="homepage.xhtml?faces-redirect=true" value="#{lm.close}"/>
+                    </h:panelGrid>
+                </h:form>
+
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

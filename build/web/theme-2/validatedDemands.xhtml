@@ -1,0 +1,117 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:metadata>
+        <f:event type="preRenderView" listener="#{sessionController.watchOut()}" />
+        <f:event type="preRenderView" listener="#{hardwareConsController.alert()}" />
+        <f:event type="preRenderView" listener="#{softwareConsController.alert()}" />
+    </f:metadata>
+    <body>
+<p:growl autoUpdate="true" id="growl" sticky="true"/>
+
+        <ui:composition template="./index.xhtml">
+
+            <ui:define name="content">
+                <h:form id="form">
+                    <center>
+                        <h:outputText id="msg" value="#{attributionController.msg}" style="color: green;"/>
+                    </center>
+                    <p:commandButton style="height: 30pt" action="validatedSoftDemands.xhtml?faces-redirect=true" value="#{lm.Demands} #{lm.Consumable} #{lm.software}"/>
+                    <p:spacer width="20" height="20" />
+                    <p:commandButton style="height: 30pt" action="validatedHardDemands.xhtml?faces-redirect=true" value="#{lm.Demands} #{lm.Consumable} #{lm.hardware}"/>
+                    
+                    <p:separator/>
+                    <center>
+                        <h1><h:outputText value="#{lm.list} #{lm.of} #{lm.Demands} #{lm.hardware} #{lm.to} #{lm.validate}"/></h1>
+                    </center><p:dataTable selectionMode="single" selection="#{attributionController.demand}" rowKey="#{item.iddemand}" scrollable="true" scrollHeight="300" id="table"  value="#{demandController.listDemandhardvalidated}" var="item">
+                        <p:column filterBy="#{item.idhardwarecons}">
+                            <f:facet name="header">
+                                <h:outputText value="#{lm.Consumable} #{lm.hardware}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.idhardwarecons}"/>
+                        </p:column>
+                        
+                        <p:column filterBy="#{item.color}">
+                            <f:facet name="header">
+                                <h:outputText value="#{lm.color}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.color}"/>
+                        </p:column>
+                        <p:column filterBy="#{item.qtydemanded}">
+                            <f:facet name="header">
+                                <h:outputText value="#{lm.quantity} #{lm.demanded}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.qtydemanded}"/>
+                        </p:column>
+                        <p:column sortBy="#{item.dateofdemand}" filterBy="#{item.dateofdemand}">
+                            <f:facet name="header">
+                                <h:outputText value="#{lm.Date} #{lm.of} #{lm.Demands}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.dateofdemand}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column filterBy="#{item.idusers}">
+                            <f:facet name="header">
+                                <h:outputText value="#{lm.Demandor}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.idusers}"/>
+                        </p:column>
+                        <p:column width="90">
+                            <center>
+                                <p:commandButton widgetVar="add" partialSubmit="true" oncomplete="PF('wv_attribution').show()" icon="ui-icon-check" value="#{lm.attribute}">
+                                    <p:confirm header="Confirmation" message="Attribute?" icon="ui-icon-alert" />
+
+                                </p:commandButton>
+                                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                    <p:commandButton value="#{lm.yes}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                    <p:commandButton value="#{lm.no}" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                </p:confirmDialog>
+                            </center>
+                        </p:column>
+                    </p:dataTable>
+                    <p:separator/>
+                </h:form>
+
+                <h:form id="form_tr">
+
+                    <p:dialog showEffect="fade" modal="true" id="fm_attribution" widgetVar="wv_attribution">
+                        <f:facet name="header">
+                            <h:outputText value="#{lm.Add} #{lm.attribution}"/>
+                        </f:facet>                       
+                        <h:panelGrid id="inputs" columns="3">
+
+                            <p:outputLabel value="#{lm.quantity} #{lm.attributed}:" for="qtyattributed" />
+                            <p:inputText id="qtyattributed" value="#{attributionController.attribution.qtyattributed}" title="Qtyattributed" />
+                            <p:message for="qtyattributed"/>
+
+                            <p:outputLabel value="#{lm.Date} #{lm.of} #{lm.attribution}:" for="dateofattribution" />
+                            <p:calendar pattern="dd/MM/yyyy" showOn="button" id="dateofattribution" value="#{attributionController.attribution.dateofattribution}" title="Dateofattribution" >
+                                
+                            </p:calendar>
+                            <p:message for="dateofattribution"/>
+
+                        </h:panelGrid>
+                        <f:facet name="footer">
+                            <center>
+                                <p:commandButton rendered="#{!attributionController.operation.equals('consult')}" icon="ui-icon-check" action="#{attributionController.saveAttribution()}" update="inputs,:form:table,:form:msg" value="#{lm.confirm}"/>
+                            </center>
+                        </f:facet>
+                    </p:dialog>
+                </h:form>
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>
+
+
+
+       

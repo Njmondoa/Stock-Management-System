@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:metadata>
+        <f:event type="preRenderView" listener="#{sessionController.watchOut()}" />
+        <f:event type="preRenderView" listener="#{hardwareConsController.alert()}" />
+        <f:event type="preRenderView" listener="#{softwareConsController.alert()}" />
+    </f:metadata>
+    <div class="ui-fluid">
+        <body>
+<p:growl autoUpdate="true" id="growl" sticky="true"/>
+            <ui:composition template="./index.xhtml">
+               
+                <ui:define name="content">
+
+                    <h:form id="form">
+                        <center>
+                            <h:outputText id="msg" value="#{departmentController.msg}" style="color: green;"/>
+                        </center>
+
+                        <p:separator/>
+                        <center>
+                            <h1><h:outputText value="#{lm.list} #{lm.of} #{lm.Department}"/></h1>
+                        </center> 
+                        <p:dataTable reflow="true" selectionMode="single" selection="#{departmentController.department}" rowKey="#{item.iddepartment}" scrollable="true" scrollHeight="250" id="table" value="#{departmentController.listDepartment}" var="item">
+
+                            <p:column filterBy="#{item.name}">
+                                <f:facet name="header">
+                                    <h:outputText value="#{lm.Name}"/>
+                                </f:facet>
+                                <h:outputText value="#{item.name}"/>
+                            </p:column>
+                        </p:dataTable>
+                        <p:separator/>
+
+                        <h:panelGrid style="margin: auto;" columns="4">
+                            <p:commandButton icon="ui-icon-plusthick" widgetVar="add" partialSubmit="true" actionListener="#{departmentController.prepareCreate}" update=":form_tr:fm_department,msg" oncomplete="PF('wv_department').show()" value="#{lm.Add}"/>
+                            <p:commandButton icon="ui-icon-pencil" widgetVar="modify" partialSubmit="true" actionListener="#{departmentController.action}" update=":form_tr:fm_department,msg" oncomplete="PF('wv_department').show()"  value="#{lm.modify}"/>
+                            <p:commandButton icon="ui-icon-trash" widgetVar="delete" partialSubmit="true" actionListener="#{departmentController.action}" update=":form_tr:fm_department,msg" oncomplete="PF('wv_department').show()"  value="#{lm.delete}"/>
+                            <p:commandButton icon="ui-icon-clipboard" widgetVar="consult" partialSubmit="true" actionListener="#{departmentController.action}" update=":form_tr:fm_department,msg" oncomplete="PF('wv_department').show()" value="#{lm.View}"/>
+
+                        </h:panelGrid>
+                    </h:form>
+
+
+
+                    <h:form id="form_tr">
+                        <p:dialog showEffect="fade" modal="true" id="fm_department" widgetVar="wv_department">
+                            <f:facet name="header">
+                                <h:outputText value="#{lm.Add} / #{lm.modify} #{lm.a} #{lm.Department}"/>
+                            </f:facet>
+                            <h:panelGrid id="inputs" columns="3">
+                                <p:outputLabel value="#{lm.Name}:" for="name" />
+                                <p:inputText disabled="#{departmentController.operation.equals('delete') or departmentController.operation.equals('consult')}" required="true" requiredMessage="Obligatory field!" id="name" value="#{departmentController.department.name}" title="Name" />
+                                <p:message for="name"/>
+                            </h:panelGrid>
+                            <f:facet name="footer">
+                                <center>
+                                    <p:commandButton rendered="#{!departmentController.operation.equals('consult')}" icon="ui-icon-check" actionListener="#{departmentController.persist()}" update="inputs,:form:table,:form:msg" value="#{lm.confirm}"/>
+                                </center>
+                            </f:facet>
+                        </p:dialog>
+                    </h:form>
+
+
+                </ui:define>
+
+            </ui:composition>
+
+        </body>
+    </div>
+</html>

@@ -1,0 +1,118 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<f:metadata>
+        <f:event type="preRenderView" listener="#{sessionController.watchOut()}" />
+        <f:event type="preRenderView" listener="#{hardwareConsController.alert()}" />
+        <f:event type="preRenderView" listener="#{softwareConsController.alert()}" />
+    </f:metadata>
+    <body>
+<p:growl autoUpdate="true" id="growl" sticky="true"/>
+
+        <ui:composition template="./index.xhtml">
+
+            <ui:define name="content">
+                <h:form id="form"><center>
+                        <h:outputText id="msg" value="#{attributionController.msg}" style="color: green;"/>
+                    </center>
+
+                    <p:separator/>
+                    <center>
+                        <h1><h:outputText value="#{lm.list} #{lm.of} #{lm.Attributions}"/></h1>
+                    </center>
+                    <p:dataTable paginatorTemplate="{Printer}" paginatorPosition="bottom"
+                                 paginator="true"
+                                 reflow="true" selectionMode="single" selection="#{attributionController.attribution}" rowKey="#{item.idattribution}" scrollable="true" scrollHeight="300" id="table" value="#{attributionController.listmyAttribution}" var="item">
+
+                       <f:facet name="{Printer}">
+                            <h:commandButton value="#{lm.Print}" style="background: greenyellow">
+                                <p:dataExporter type="pdf" target="table" fileName="#{lm.my} #{lm.Attributions}" options="#{exportReport.pdfOpt}"/>
+                            </h:commandButton>
+                        </f:facet> 
+                        <p:column filterBy="#{item.iddemand}">
+                            <f:facet name="header">
+                                <h:outputText value="#{lm.Demandor}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.iddemand}"/>
+                        </p:column>
+                        <p:column filterBy="#{item.idhardwarecons}">
+                            <f:facet name="header">
+                                <h:outputText value="#{lm.Consumable} #{lm.hardware}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.idhardwarecons}"/>
+                        </p:column>
+                        <p:column filterBy="#{item.idsoftwarecons}">
+                            <f:facet name="header">
+                                <h:outputText value="#{lm.Consumable} #{lm.software}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.idsoftwarecons}"/>
+                        </p:column>
+                        <p:column filterBy="#{item.qtyattributed}">
+                            <f:facet name="header">
+                                <h:outputText value="#{lm.quantity} #{lm.attributed}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.qtyattributed}"/>
+                        </p:column>
+                        <p:column sortBy="#{item.dateofattribution}" filterBy="#{item.dateofattribution}">
+                            <f:facet name="header">
+                                <h:outputText value="#{lm.Date} #{lm.of} #{lm.Attributions}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.dateofattribution}">
+                                <f:convertDateTime pattern="MM/dd/yyyy" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column filterBy="#{item.idusers}">
+                            <f:facet name="header">
+                                <h:outputText value="#{lm.attributor}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.idusers}"/>
+                        </p:column>
+                    </p:dataTable>
+                    <p:separator/>
+
+                    <h:panelGrid style="margin: auto;" columns="5">
+                        <p:commandButton icon="ui-icon-clipboard" widgetVar="consult" partialSubmit="true" actionListener="#{attributionController.action}" update=":form_tr:fm_attribution,msg" oncomplete="PF('wv_attribution').show()" value="#{lm.View}"/>
+
+                    </h:panelGrid>
+                </h:form>
+                
+
+
+                    <h:form id="form_tr">
+
+                    <p:dialog showEffect="fade" modal="true" id="fm_attribution" widgetVar="wv_attribution">
+                        <f:facet name="header">
+                            <h:outputText value="#{lm.Add} / #{lm.modify} #{lm.an} #{lm.attribution}"/>
+                        </f:facet>                       
+                        <h:panelGrid id="inputs" columns="3">
+
+                            <p:outputLabel value="#{lm.quantity} #{lm.attributed}:" for="qtyattributed" />
+                            <p:inputText disabled="#{attributionController.operation.equals('delete') or attributionController.operation.equals('consult')}" id="qtyattributed" value="#{attributionController.attribution.qtyattributed}" title="Qtyattributed" />
+                            <p:message for="qtyattributed"/>
+
+                            <p:outputLabel value="#{lm.Date} #{lm.of} #{lm.attribution}:" for="dateofattribution" />
+                            <p:calendar disabled="#{attributionController.operation.equals('delete') or attributionController.operation.equals('consult')}" pattern="dd/MM/yyyy" showOn="button" id="dateofattribution" value="#{attributionController.attribution.dateofattribution}" title="Dateofattribution" />
+                            
+                            <p:message for="dateofattribution"/>
+
+                            
+                        </h:panelGrid>
+                        <f:facet name="footer">
+                            <center>
+                                <p:commandButton rendered="#{!attributionController.operation.equals('consult')}" icon="ui-icon-check" actionListener="#{attributionController.persist()}" update="inputs,:form:table,:form:msg" value="#{lm.Save}"/>
+                            </center>
+                        </f:facet>
+                    </p:dialog>
+                </h:form>
+                
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

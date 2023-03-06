@@ -1,0 +1,92 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:metadata>
+        <f:event type="preRenderView" listener="#{sessionController.watchOut()}" />
+        <f:event type="preRenderView" listener="#{hardwareConsController.alert()}" />
+        <f:event type="preRenderView" listener="#{softwareConsController.alert()}" />
+    </f:metadata>
+    <body>
+<p:growl autoUpdate="true" id="growl" sticky="true"/>
+
+        <ui:composition template="./index.xhtml">
+
+            <ui:define name="content">
+                <h:form id="form">
+                    <center>
+                        <h:outputText id="msg" value="#{demandController.msg}" style="color: green;"/>
+                    </center>
+                    <p:separator/>
+                    <center>
+                        <h1><h:outputText value="#{lm.list} #{lm.of} #{lm.Demands} #{lm.to} #{lm.confirm}"/></h1>
+                    </center><p:dataTable selectionMode="single" selection="#{demandController.demand}" rowKey="#{item.iddemand}" scrollable="true" scrollHeight="300" id="table"  value="#{demandController.listDemandnotconfirmed}" var="item">
+                        <p:column filterBy="#{item.idhardwarecons}">
+                            <f:facet name="header">
+                                <h:outputText value="#{lm.Consumable} #{lm.hardware}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.idhardwarecons}"/>
+                        </p:column>
+                        <p:column filterBy="#{item.idsoftwarecons}">
+                            <f:facet name="header">
+                                <h:outputText value="#{lm.Consumable} #{lm.software}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.idsoftwarecons}"/>
+                        </p:column>
+
+                        <p:column filterBy="#{item.color}">
+                            <f:facet name="header">
+                                <h:outputText value="#{lm.color}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.color}"/>
+                        </p:column>
+                        <p:column filterBy="#{item.qtydemanded}">
+                            <f:facet name="header">
+                                <h:outputText value="#{lm.quantity} #{lm.demanded}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.qtydemanded}"/>
+                        </p:column>
+                        <p:column filterBy="#{item.dateofdemand}">
+                            <f:facet name="header">
+                                <h:outputText value="#{lm.Date} #{lm.of} #{lm.Demands}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.dateofdemand}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column filterBy="#{item.idusers}">
+                            <f:facet name="header">
+                                <h:outputText value="#{lm.Demandor}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.idusers}"/>
+                        </p:column>
+                        <p:column width="90">
+                            <center>
+                                <p:commandButton partialSubmit="true" actionListener="#{demandController.confirmDemand()}" icon="ui-icon-check" update=":form:table,:form:msg" value="#{lm.confirm}">
+                                    <p:confirm header="Confirmation" message="Confirm?" icon="ui-icon-alert" />
+
+                                </p:commandButton>
+                                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                    <p:commandButton value="#{lm.yes}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                    <p:commandButton value="#{lm.no}" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                </p:confirmDialog>
+                            </center>
+                        </p:column>
+                    </p:dataTable>
+                    <p:separator/>
+
+
+                </h:form>
+
+
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

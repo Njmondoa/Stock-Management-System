@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <f:metadata>
+        <f:event type="preRenderView" listener="#{sessionController.watchOut()}" />
+        <f:event type="preRenderView" listener="#{hardwareConsController.alert()}" />
+        <f:event type="preRenderView" listener="#{softwareConsController.alert()}" />
+    </f:metadata>
+    <body>
+
+        <ui:composition template="./index.xhtml">
+
+            <ui:define name="content">
+                <h:form>
+                    <h:panelGrid id="form" columns="2" columnClasses="left,right" style="margin-top: auto; padding-left: 245px; float:right;">
+                        <p:outputLabel style="color: black;" value="Beggining of month" for="beg"/>
+                        <p:calendar id="beg" showOn="button" pattern="dd/MM/yyyy" value="#{chartController.date1}">
+                            <f:convertDateTime pattern="dd/MM/yyyy"/>
+                        </p:calendar>
+                        <p:outputLabel style="color: black;"  value="Ending month" for="end"/>
+                        <p:calendar id="end" showOn="button" pattern="dd/MM/yyyy" value="#{chartController.date}">
+                            <f:convertDateTime pattern="dd/MM/yyyy"/>
+                        </p:calendar>
+                        <p:commandButton ignoreAutoUpdate="false" update="chart" action="#{chartController.actualiser()}" value="#{lm.refresh}"/>
+                    </h:panelGrid>
+                    <h:panelGrid id="chart" columns="2" columnClasses="left,right" style="margin-top: auto; margin-top: 0px; padding-left: 20px;">
+                        <p:chart type="bar" model="#{chartController.animatedModel2}" style="width:650px; height: 350px" />
+                        <p:chart type="pie" model="#{chartController.pieModel1}" style="width:300px; height: 300px; " />
+                    </h:panelGrid>
+                </h:form>
+<!--                <fiji:columnChart id="columnChartMulti" value="#{CBeanMulti.monthMap}" title="Multi-series Column Chart"  
+                                 barColors="#{CBeanMulti.colors}" captionX="Months" captionY="Amount" toolTipValue="{y} {name} are sold in {x}"
+                                 legendCaption="Hardware" legendPosition="top" subtitle="Hardware sales per month" width="500" height="500"
+                                 rulersValuesHighlight="none">
+                   <fiji:chartData type="name" value="#{CBeanMulti.names}" />
+               </fiji:columnChart>-->
+            </ui:define>
+
+        </ui:composition>
+
+
+    </body>
+</html>

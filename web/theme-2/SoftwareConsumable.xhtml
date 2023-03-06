@@ -1,0 +1,145 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:metadata>
+        <f:event type="preRenderView" listener="#{sessionController.watchOut()}" />
+        <f:event type="preRenderView" listener="#{hardwareConsController.alert()}" />
+        <f:event type="preRenderView" listener="#{softwareConsController.alert()}" />
+    </f:metadata>
+
+
+    <body>
+
+        <ui:composition template="./index.xhtml">
+
+            <ui:define name="content">
+
+                <h:form id="form">
+                    <p:growl autoUpdate="true" id="growl" sticky="true"/>
+
+
+                    <center>
+                        <h:outputText id="msg" value="#{softwareConsController.msg}" style="color: green;"/>
+                    </center>
+                    <p:commandButton style="height: 30pt" action="hardwareConsumable.xhtml?faces-redirect=true" value="#{lm.Consumable} #{lm.hardware}"/>
+                    <p:spacer width="20" height="20" />
+                    <p:commandButton style="height: 30pt" action="SoftwareConsumable.xhtml?faces-redirect=true" value="#{lm.Consumable} #{lm.software}"/>
+
+                    <p:separator/>
+                    <center>
+                        <h1><h:outputText value="#{lm.list} #{lm.of} #{lm.Consumable} #{lm.software}"/></h1>
+                    </center>
+                    <p:dataTable paginatorTemplate="{Printer}" paginatorPosition="bottom"
+                                  paginator="true"
+                                  reflow="true" selectionMode="single" selection="#{softwareConsController.softwarecons}" rowKey="#{item.idsoftwarecons}" scrollable="true" scrollHeight="200" id="table" value="#{softwareConsController.listSoftwarecon}" var="item">
+                        <f:facet name="{Printer}">
+                            <h:commandButton value="#{lm.Print}" style="background: greenyellow">
+                                <p:dataExporter type="pdf" target="table" fileName="#{lm.list} #{lm.of} #{lm.Consumable} #{lm.software}" options="#{exportReport.pdfOpt}"/>
+                            </h:commandButton>
+                        </f:facet>
+                        <p:column filterBy="#{item.name}">
+                            <f:facet name="header">
+                                <h:outputText value="#{lm.Name}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.name}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{lm.license}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.license}"/>
+                        </p:column>
+                        <p:column filterBy="#{item.idmaterial.name}">
+                            <f:facet name="header">
+                                <h:outputText value="#{lm.Itmaterial}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.idmaterial}"/>
+                        </p:column>
+                        <p:column filterBy="#{item.supplier}">
+                            <f:facet name="header">
+                                <h:outputText value="#{lm.supplier}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.supplier}"/>
+                        </p:column>
+                        <p:column filterBy="#{item.stockquantity}">
+                            <f:facet name="header">
+                                <h:outputText value="#{lm.quantity} #{lm.in} #{lm.stock}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.stockquantity}"/>
+                        </p:column>
+                        <p:column filterBy="#{item.criticalquantity}">
+                            <f:facet name="header">
+                                <h:outputText value="#{lm.quantity} #{lm.alert}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.criticalquantity}"/>
+                        </p:column>
+
+                    </p:dataTable>
+                    <p:separator/>
+
+                    <h:panelGrid style="margin: auto;" columns="5">
+                        <p:commandButton icon="ui-icon-plusthick" widgetVar="add" partialSubmit="true" actionListener="#{softwareConsController.prepareCreate}" update=":form_tr:fm_softwarecons,msg" oncomplete="PF('wv_softwarecons').show()" value="#{lm.Add}"/>
+                        <p:commandButton icon="ui-icon-pencil" widgetVar="modify" partialSubmit="true" actionListener="#{softwareConsController.action}" update=":form_tr:fm_softwarecons,msg" oncomplete="PF('wv_softwarecons').show()"  value="#{lm.modify}"/>
+                        <p:commandButton icon="ui-icon-trash" widgetVar="delete" partialSubmit="true" actionListener="#{softwareConsController.action}" update=":form_tr:fm_softwarecons,msg" oncomplete="PF('wv_softwarecons').show()"  value="#{lm.delete}"/>
+                        <p:commandButton icon="ui-icon-clipboard" widgetVar="consult" partialSubmit="true" actionListener="#{softwareConsController.action}" update=":form_tr:fm_softwarecons,msg" oncomplete="PF('wv_softwarecons').show()" value="#{lm.View}"/>
+
+                    </h:panelGrid>
+                </h:form>
+
+                <h:form id="form_tr">
+                    <p:dialog showEffect="fade" modal="true" id="fm_softwarecons" widgetVar="wv_softwarecons">
+                        <f:facet name="header">
+                            <h:outputText value="#{lm.Add} / #{lm.modify} #{lm.a} #{lm.Consumable} #{lm.software}"/>
+                        </f:facet>
+
+                        <h:panelGrid id="inputs" columns="3">
+
+                            <p:outputLabel value="#{lm.Name}:" for="name" />
+                            <p:inputText disabled="#{softwareConsController.operation.equals('delete') or softwareConsController.operation.equals('consult')}" required="true" requiredMessage="Obligatory field!" id="name" value="#{softwareConsController.softwarecons.name}" title="Name" />
+                            <p:message for="name"/>
+
+                            <p:outputLabel value="#{lm.license}:" for="license" />
+                            <p:inputText disabled="#{softwareConsController.operation.equals('delete') or softwareConsController.operation.equals('consult')}" required="true" requiredMessage="Obligatory field!" id="license" value="#{softwareConsController.softwarecons.license}" title="License" />
+                            <p:message for="license"/>
+
+                            <p:outputLabel value="#{lm.Itmaterial}:" for="idmaterial" />
+                            <p:selectOneMenu disabled="#{softwareConsController.operation.equals('delete') or softwareConsController.operation.equals('consult')}" required="true" requiredMessage="Obligatory field!" id="idmaterial" value="#{softwareConsController.itmaterial.idmaterial}">
+                                <!-- TODO: update below reference to list of available items-->
+                                <f:selectItem itemLabel="" itemValue=""/>
+                                <f:selectItems value="#{softwareConsController.listItmaterial}" var="itmaterial" itemLabel="#{itmaterial.name}" itemValue="#{itmaterial.idmaterial}"/>
+                            </p:selectOneMenu>
+                            <p:message for="idmaterial"/>
+
+                            <p:outputLabel value="#{lm.supplier}:" for="supplier" />
+                            <p:inputText disabled="#{softwareConsController.operation.equals('delete') or softwareConsController.operation.equals('consult')}" required="true" requiredMessage="Obligatory field!" id="supplier" value="#{softwareConsController.softwarecons.supplier}" title="Supplier" />
+                            <p:message for="supplier"/>
+
+                            <p:outputLabel value="#{lm.quantity} #{lm.in} #{lm.stock}:" for="stockquantity" />
+                            <p:inputText disabled="#{softwareConsController.operation.equals('delete') or softwareConsController.operation.equals('consult')}" required="true" requiredMessage="Obligatory field!" id="stockquantity" value="#{softwareConsController.softwarecons.stockquantity}" title="Stockquantity" />
+                            <p:message for="stockquantity"/>
+
+                            <p:outputLabel value="#{lm.quantity} #{lm.alert}:" for="criticalquantity" />
+                            <p:inputText disabled="#{softwareConsController.operation.equals('delete') or softwareConsController.operation.equals('consult')}" required="true" requiredMessage="Obligatory field!" id="criticalquantity" value="#{softwareConsController.softwarecons.criticalquantity}" title="Criticalquantity" />
+                            <p:message for="criticalquantity"/>
+
+                        </h:panelGrid>
+                        <f:facet name="footer">
+                            <center>
+                                <p:commandButton rendered="#{!softwareConsController.operation.equals('consult')}" icon="ui-icon-check" actionListener="#{softwareConsController.persist()}" update="inputs,:form:table,:form:msg" value="#{lm.confirm}"/>
+                            </center>
+                        </f:facet>
+                    </p:dialog>
+                </h:form>
+
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

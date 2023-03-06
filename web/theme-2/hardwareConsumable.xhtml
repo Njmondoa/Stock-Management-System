@@ -1,0 +1,148 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    
+    <f:metadata>
+        <f:event type="preRenderView" listener="#{sessionController.watchOut()}" />
+        <f:event type="preRenderView" listener="#{hardwareConsController.alert()}" />
+        <f:event type="preRenderView" listener="#{softwareConsController.alert()}" />
+
+    </f:metadata>
+    
+
+    <body>
+
+        <ui:composition template="./index.xhtml">
+
+            <ui:define name="content">
+                <h:form id="form">
+                        
+                    <p:growl autoUpdate="true" id="growl" sticky="true"/>
+                    
+                    <center>
+                        <h:outputText id="msg" value="#{hardwareConsController.msg}" style="color: green;"/>
+                    </center>
+                    <p:commandButton style="height: 30pt" action="SoftwareConsumable.xhtml?faces-redirect=true" value="#{lm.Consumable} #{lm.software}"/>
+                    <p:spacer width="20" height="20" />
+                    <p:commandButton style="height: 30pt" action="hardwareConsumable.xhtml?faces-redirect=true" value="#{lm.Consumable} #{lm.hardware}"/>
+                    <p:separator/>
+                    <center>
+                        <h1><h:outputText value="#{lm.list} #{lm.of} #{lm.Consumable} #{lm.hardware}"/></h1>
+                    </center>
+                    <p:dataTable paginatorTemplate="{Printer}" paginatorPosition="bottom"
+                                  paginator="true"
+                                  reflow="true" selectionMode="single" selection="#{hardwareConsController.hardwarecons}" rowKey="#{item.idhardwarecons}" scrollable="true" scrollHeight="200" id="table" value="#{hardwareConsController.listHardwarecon}" var="item">
+                       <f:facet name="{Printer}">
+                            <h:commandButton value="#{lm.Print}" style="background: greenyellow">
+                                <p:dataExporter type="pdf" target="table" fileName="#{lm.list} #{lm.of} #{lm.Consumable} #{lm.hardware}" options="#{exportReport.pdfOpt}"/>
+                            </h:commandButton>
+                        </f:facet>
+                        <p:column filterBy="#{item.name}">
+                            <f:facet name="header">
+                                <h:outputText value="#{lm.Name}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.name}"/>
+                        </p:column>
+                        <p:column filterBy="#{item.color}">
+                            <f:facet name="header">
+                                <h:outputText value="#{lm.color}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.color}"/>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Reference"/>
+                            </f:facet>
+                            <h:outputText value="#{item.reference}"/>
+                        </p:column>
+                        <p:column filterBy="#{item.idmaterial.name}">
+                            <f:facet name="header">
+                                <h:outputText value="#{lm.Itmaterial}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.idmaterial}"/>
+                        </p:column>
+
+                        <p:column filterBy="#{item.supplier}">
+                            <f:facet name="header">
+                                <h:outputText value="#{lm.supplier}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.supplier}"/>
+                        </p:column>
+                        <p:column filterBy="#{item.stockquantity}">
+                            <f:facet name="header">
+                                <h:outputText value="#{lm.quantity} #{lm.in} #{lm.stock}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.stockquantity}"/>
+                        </p:column>
+                        <p:column filterBy="#{item.criticalquantity}">
+                            <f:facet name="header">
+                                <h:outputText value="#{lm.quantity} #{lm.alert}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.criticalquantity}"/>
+                        </p:column>
+
+                    </p:dataTable>
+                    <p:separator/>
+
+                    <h:panelGrid style="margin: auto;" columns="5">
+                        <p:commandButton icon="ui-icon-plusthick" widgetVar="add" partialSubmit="true" actionListener="#{hardwareConsController.prepareCreate}" update=":form_tr:fm_hardwarecons,msg" oncomplete="PF('wv_hardwarecons').show()" value="#{lm.Add}"/>
+                        <p:commandButton icon="ui-icon-pencil" widgetVar="modify" partialSubmit="true" actionListener="#{hardwareConsController.action}" update=":form_tr:fm_hardwarecons,msg" oncomplete="PF('wv_hardwarecons').show()"  value="#{lm.modify}"/>
+                        <p:commandButton icon="ui-icon-trash" widgetVar="delete" partialSubmit="true" actionListener="#{hardwareConsController.action}" update=":form_tr:fm_hardwarecons,msg" oncomplete="PF('wv_hardwarecons').show()"  value="#{lm.delete}"/>
+                        <p:commandButton icon="ui-icon-clipboard" widgetVar="consult" partialSubmit="true" actionListener="#{hardwareConsController.action}" update=":form_tr:fm_hardwarecons,msg" oncomplete="PF('wv_hardwarecons').show()" value="#{lm.View}"/>
+
+                    </h:panelGrid>
+                </h:form>
+                <h:form id="form_tr">
+                    <p:dialog showEffect="fade" modal="true" id="fm_hardwarecons" widgetVar="wv_hardwarecons">
+                        <f:facet name="header">
+                            <h:outputText value="#{lm.Add} / #{lm.modify} #{lm.a} #{lm.Consumable} #{lm.hardware}"/>
+                        </f:facet>
+                        <h:panelGrid id="inputs" columns="3">
+                            <p:outputLabel value="#{lm.Name}:" for="name" />
+                            <p:inputText disabled="#{hardwareConsController.operation.equals('delete') or hardwareConsController.operation.equals('consult')}" required="true" requiredMessage="Obligatory field!" id="name" value="#{hardwareConsController.hardwarecons.name}" title="Name" />
+                            <p:message for="name"/>
+
+                            <p:outputLabel value="#{lm.color}:" for="color" />
+                            <p:inputText disabled="#{hardwareConsController.operation.equals('delete') or hardwareConsController.operation.equals('consult')}" id="color" value="#{hardwareConsController.hardwarecons.color}" title="Color" />
+                            <p:message for="color"/>
+                            <p:outputLabel value="Reference:" for="reference" />
+                            <p:inputText disabled="#{hardwareConsController.operation.equals('delete') or hardwareConsController.operation.equals('consult')}" required="true" requiredMessage="Obligatory field!" id="reference" value="#{hardwareConsController.hardwarecons.reference}" title="Reference" />
+                            <p:message for="reference"/>
+                            <p:outputLabel value="#{lm.Itmaterial}:" for="idmaterial" />
+                            <p:selectOneMenu disabled="#{hardwareConsController.operation.equals('delete') or hardwareConsController.operation.equals('consult')}" required="true" requiredMessage="Obligatory field!" id="idmaterial" value="#{hardwareConsController.itmaterial.idmaterial}">
+                                <!-- TODO: update below reference to list of available items-->
+                                <f:selectItem itemLabel="" itemValue=""/>
+                                <f:selectItems value="#{hardwareConsController.listItmaterial}" var="itmaterial" itemLabel="#{itmaterial.name}" itemValue="#{itmaterial.idmaterial}"/>
+                            </p:selectOneMenu>
+                            <p:message for="idmaterial"/>
+                        
+                            <p:outputLabel value="#{lm.supplier}:" for="supplier" />
+                            <p:inputText disabled="#{hardwareConsController.operation.equals('delete') or hardwareConsController.operation.equals('consult')}" required="true" requiredMessage="Obligatory field!" id="supplier" value="#{hardwareConsController.hardwarecons.supplier}" title="Supplier" />
+                            <p:message for="supplier"/>
+                            <p:outputLabel value="#{lm.quantity} #{lm.in} #{lm.stock}:" for="stockquantity" />
+                            <p:inputText disabled="#{hardwareConsController.operation.equals('delete') or hardwareConsController.operation.equals('consult')}" required="true" requiredMessage="Obligatory field!" id="stockquantity" value="#{hardwareConsController.hardwarecons.stockquantity}" title="Stockquantity" />
+                            <p:message for="stockquantity"/>
+                            <p:outputLabel value="#{lm.quantity} #{lm.alert}:" for="criticalquantity" />
+                            <p:inputText disabled="#{hardwareConsController.operation.equals('delete') or hardwareConsController.operation.equals('consult')}" required="true" requiredMessage="Obligatory field!" id="criticalquantity" value="#{hardwareConsController.hardwarecons.criticalquantity}" title="Criticalquantity" />
+                            <p:message for="criticalquantity"/>
+                            </h:panelGrid>
+                        <f:facet name="footer">
+                            <center>
+                                <p:commandButton rendered="#{!hardwareConsController.operation.equals('consult')}" icon="ui-icon-check" actionListener="#{hardwareConsController.persist()}" update="inputs,:form:table,:form:msg" value="#{lm.confirm}"/>
+                            </center>
+                        </f:facet>
+                    </p:dialog>
+                </h:form>
+
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>
