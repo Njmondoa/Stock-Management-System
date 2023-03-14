@@ -4,6 +4,15 @@
 I developed a Java Enterprise application to manage stocks in any business organisation.
 
 
+## Preview
+
+
+ ![](Covers/stockCover1.png)
+
+
+ ![](Covers/stockCover2.png)
+
+
 
 ### Tools, Technologies and Languages
 
