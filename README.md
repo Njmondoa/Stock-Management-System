@@ -43,7 +43,6 @@ I developed a Java Enterprise application to manage stocks in any business organ
 - PrimeFaces
 - Postgresql
 
-
 ### Installation
 
 To deploy this project, first install glassfish server, upload the .war file and click deploy, then install 
